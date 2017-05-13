@@ -12,10 +12,10 @@ node {
     for (int i = 0; i < numHelloMessages.toInteger(); i++) {
       branches["split${i}"] = {
         stage("Stage parallel- #" + i){
-          node('remote') {
+          node {
             echo  'Starting sleep'
-            sleep 10
-              echo  'Finished sleep'
+            sleep 1
+            echo  'Finished sleep'
           }
         }
       }
