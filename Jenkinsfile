@@ -1,5 +1,8 @@
 pipeline {
     agent { docker { image 'maven:3.3.3' } }
+    options {
+        skipStagesAfterUnstable()
+    }
     environment {
         DISABLE_AUTH = 'true'
         DB_ENGINE    = 'sqlite'
@@ -44,12 +47,19 @@ pipeline {
     post {
     	always {
             echo 'This will always run'
+            deleteDir() /* clean up our workspace */
         }
         success {
             echo 'This will run only if successful'
+            slackSend channel: '#general',
+                  color: 'good',
+                  message: "The pipeline ${currentBuild.fullDisplayName} completed successfully."
         }
         failure {
             echo 'This will run only if failed'
+            slackSend channel: '#general',
+                  color: 'bad',
+                  message: "The pipeline ${currentBuild.fullDisplayName} has failed."
         }
         unstable {
             echo 'This will run only if the run was marked as unstable'
@@ -60,4 +70,3 @@ pipeline {
         }
     }
 }
-
