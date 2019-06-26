@@ -30,6 +30,11 @@ pipeline {
                 sh 'echo "Esto aunque pone failed, está OK"'
         	}
         }
+        stage('Post-Deploy') {
+            steps {
+                sh 'echo "Esto sale si el anterior Stage funciona"'
+            }
+        }
     }
     post {
     	always {
